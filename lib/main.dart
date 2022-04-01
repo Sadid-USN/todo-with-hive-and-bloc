@@ -4,6 +4,7 @@ import 'package:bloc_test/hive_database.dart';
 import 'package:bloc_test/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'models/todo_model.dart';
@@ -34,9 +35,11 @@ class MyApp extends StatelessWidget {
             TodoBloc(hiveDataBase: _hiveDataBase)..add(LoadTodos())),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Hive',
+          title: 'Todo with Hive and Bloc',
           theme: ThemeData(
-            primaryColor: Colors.blue[900],
+            textTheme: GoogleFonts.ptSerifCaptionTextTheme(
+                Theme.of(context).textTheme),
+            primaryColor: Colors.brown[900],
           ),
           home: const HomePage(),
         ),

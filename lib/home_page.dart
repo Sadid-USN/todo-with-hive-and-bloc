@@ -5,8 +5,6 @@ import 'package:bloc_test/bloc/todo_event.dart';
 import 'package:bloc_test/bloc/todo_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 import 'models/todo_model.dart';
 
@@ -17,7 +15,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     TodoBloc mainBloc = context.read<TodoBloc>();
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
@@ -49,66 +47,81 @@ class HomePage extends StatelessWidget {
                       },
                       child: SizedBox(
                         height: 150,
-                        child: Card(
-                          child: ListTile(
-                            title: Text(
-                              todo.title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 20),
-                            ),
-                            subtitle: Text(
-                              todo.description,
-                              maxLines: 4,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.task_alt_outlined,
-                                    color: todo.isDon
-                                        ? Colors.green[300]
-                                        : Colors.blueGrey,
-                                  ),
-                                  onPressed: () {
-                                    mainBloc.add(
-                                      UpdateTodo(
-                                        todo: todo.copyWith(
-                                          isDon: !todo.isDon,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.edit,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                  onPressed: () {
-                                    _bottomSheet(
-                                      context: context,
-                                      todo: todo,
-                                    );
-                                  },
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.red[700],
-                                  ),
-                                  onPressed: () {
-                                    mainBloc.add(
-                                      DeleteTodo(
-                                        todo: state.todos[index],
-                                      ),
-                                    );
-                                  },
-                                ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5.0),
+                          child: Container(
+                            margin: const EdgeInsets.all(8),
+                            decoration: const BoxDecoration(
+                              color: Color(0xffF3EEE2),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black38,
+                                    offset: Offset(0.0, 2.0),
+                                    blurRadius: 6.0)
                               ],
+                            ),
+                            child: ListTile(
+                              title: Text(
+                                todo.title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 20),
+                              ),
+                              subtitle: Text(
+                                todo.description,
+                                maxLines: 4,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.task_alt_sharp,
+                                      color: todo.isDon
+                                          ? Colors.green[600]
+                                          : Colors.blueGrey,
+                                    ),
+                                    onPressed: () {
+                                      mainBloc.add(
+                                        UpdateTodo(
+                                          todo: todo.copyWith(
+                                            isDon: !todo.isDon,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    onPressed: () {
+                                      _bottomSheet(
+                                        context: context,
+                                        todo: todo,
+                                      );
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: Colors.red[700],
+                                    ),
+                                    onPressed: () {
+                                      mainBloc.add(
+                                        DeleteTodo(
+                                          todo: state.todos[index],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -142,7 +155,7 @@ class HomePage extends StatelessWidget {
     required BuildContext context,
     Todo? todo,
   }) {
-    Random random = Random();
+    // Random random = Random();
     TextEditingController titleController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
 
@@ -198,7 +211,7 @@ class HomePage extends StatelessWidget {
                               );
                         } else {
                           Todo todo = Todo(
-                            id: '${random.nextInt(3000)}',
+                            id: UniqueKey().toString(),
                             title: titleController.text,
                             description: descriptionController.text,
                             isDon: false,
